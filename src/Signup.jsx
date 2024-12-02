@@ -12,15 +12,6 @@ export default function Signup() {
   });
 
   function handleSignup(data) {
-    console.log(data, "---");
-    /* {
-  "name": "string",
-  "email": "string",
-  "nickname": "string",
-  "password": "string"
-
-  https://kiwitter-node-77f5acb427c1.herokuapp.com/api-docs/#/Auth/post_users_signup
-} */
     axios.post('https://kiwitter-node-77f5acb427c1.herokuapp.com/users/signup', data)
       .then(function (response) {
         console.log(response);

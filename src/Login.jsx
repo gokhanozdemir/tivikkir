@@ -2,11 +2,16 @@ import queryString from "query-string";
 import AuthLayout from "./AuthLayout";
 import { useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useUserContext } from "./context/UserContext";
+import axios from "axios";
 
 export default function Login() {
   const { search } = useLocation();
   const values = queryString.parse(search);
   console.log(values.expiresIn, "***");
+
+  const { setUserInfo } = useUserContext();
+
 
   const {
     register,
@@ -18,6 +23,14 @@ export default function Login() {
 
   function handleLogin(data) {
     console.log(data, "---");
+    axios.post('https://kiwitter-node-77f5acb427c1.herokuapp.com/login', data)
+      .then(function (response) {
+        console.log(response);
+        setUserInfo(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   return (
