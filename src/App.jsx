@@ -3,10 +3,15 @@ import { Switch, Route } from "react-router-dom";
 import PageLayout from "./PageLayout";
 import Login from "./Login";
 import Signup from "./Signup";
+import { useUserContext } from "./context/UserContext";
 
 function App() {
+
+  const { userInfo } = useUserContext();
+
   return (
     <div>
+      {userInfo.token ? "kullanıcı daha önce giriş yapmış" : "Kullanıcı daha önce giriş yapmış degil"}
       <Switch>
         <Route path="/login">
           <Login />

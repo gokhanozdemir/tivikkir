@@ -1,12 +1,21 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { jwtDecode } from "jwt-decode";
+import { isPast } from "date-fns";
 
 const UserContext = createContext();
 
 export default function UserContextProvider({ children }) {
 
 	const [userInfo, setUserInfo] = useLocalStorage("tivikkir-user", {});
+
+	useEffect(() => {
+		if (userInfo.token) {
+			if (isPast(jwtDecode(userInfo.token).exp * 1000)) {
+				setUserInfo({});
+			}
+		}
+	}, [userInfo]);
 
 	// userInfo.token 
 	/* 
