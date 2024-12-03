@@ -5,9 +5,12 @@ import { useForm } from "react-hook-form";
 import { useUserContext } from "./context/UserContext";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 export default function Login() {
   const { search } = useLocation();
+  const history = useHistory();
+
   const values = queryString.parse(search);
   console.log(values.expiresIn, "***");
 
@@ -32,7 +35,7 @@ export default function Login() {
         setTokenData(response.data);
 
         toast.update(toasterLogin, { render: "All is good", type: "success", isLoading: false, closeOnClick: true, autoClose: 2000 });
-
+        history.push("/");
       })
       .catch(function (error) {
         toast.update(toasterLogin, { render: error.response.data, type: "error", isLoading: false, closeOnClick: true, autoClose: 4000 });
