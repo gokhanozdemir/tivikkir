@@ -10,8 +10,8 @@ function App() {
   const { userInfo } = useUserContext();
 
   return (
-    <div className="bg-gray-100">
-      {userInfo.name ? userInfo.name : "Kullanıcı daha önce giriş yapmış degil"}
+    <div className="bg-indigo-100 dark:bg-indigo-950">
+      <h3 className="text-3xl text-yellow-50 bg-" >  {userInfo.name ? userInfo.name : "Kullanıcı daha önce giriş yapmış degil"}</h3 >
       <Switch>
         <Route path="/login">
           <Login />

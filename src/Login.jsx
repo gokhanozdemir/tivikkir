@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useUserContext } from "./context/UserContext";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export default function Login() {
   const { search } = useLocation();
@@ -22,13 +23,19 @@ export default function Login() {
   });
 
   function handleLogin(data) {
+    const toasterLogin = toast.loading("Please wait...")
     console.log(data, "---");
     axios.post('https://kiwitter-node-77f5acb427c1.herokuapp.com/login', data)
       .then(function (response) {
+
         console.log(response);
         setTokenData(response.data);
+
+        toast.update(toasterLogin, { render: "All is good", type: "success", isLoading: false, closeOnClick: true, autoClose: 2000 });
+
       })
       .catch(function (error) {
+        toast.update(toasterLogin, { render: error.response.data, type: "error", isLoading: false, closeOnClick: true, autoClose: 4000 });
         console.log(error);
       });
   }
