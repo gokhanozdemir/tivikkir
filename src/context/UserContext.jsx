@@ -20,7 +20,7 @@ export default function UserContextProvider({ children }) {
 			} else {
 				// burada başarılı giriş var
 				setUserInfo(payload);
-				history.push("/");
+				//history.push("/");
 			}
 		}
 	}, [tokenData]);
