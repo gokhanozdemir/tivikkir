@@ -1,11 +1,12 @@
 import queryString from "query-string";
 import AuthLayout from "./AuthLayout";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useUserContext } from "./context/UserContext";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { LogIn } from 'lucide-react';
 
 export default function Login() {
   const { search } = useLocation();
@@ -79,10 +80,11 @@ export default function Login() {
         <div className="pt-4">
           <button
             type="submit"
-            className="h-12 text-center block w-full rounded-lg bg-lime-700 text-white font-bold "
-          >
+            className="h-12 text-center block w-full rounded-lg bg-primary text-white font-bold flex flex-nowrap justify-center items-center gap-2"
+          ><LogIn />
             GİRİŞ
           </button>
+          <p className="text-slate-500">Üye değil misin? O zaman <Link to="/signup">kayıt ol</Link></p>
         </div>
       </form>
     </AuthLayout>

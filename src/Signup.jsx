@@ -1,7 +1,8 @@
 import AuthLayout from "./AuthLayout";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-
+import { Milestone } from 'lucide-react';
+import { Link } from "react-router-dom"
 export default function Signup() {
   const {
     register,
@@ -91,10 +92,11 @@ export default function Signup() {
         <div className="pt-4">
           <button
             type="submit"
-            className="h-12 text-center block w-full rounded-lg bg-lime-700 text-white font-bold "
+            className="h-12 text-center w-full rounded-lg bg-primary text-white font-bold flex flex-nowrap justify-center items-center gap-2"
           >
-            ÜYE OL
+            <Milestone />ÜYE OL
           </button>
+          <p className="text-slate-500">Zaten üye misin? O zaman <Link to="/login">giriş yap</Link></p>
         </div>
       </form>
     </AuthLayout>
