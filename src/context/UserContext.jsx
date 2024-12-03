@@ -2,35 +2,32 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { jwtDecode } from "jwt-decode";
 import { isPast } from "date-fns";
+import { useHistory } from "react-router-dom";
 
 const UserContext = createContext();
 
 export default function UserContextProvider({ children }) {
-
-	const [userInfo, setUserInfo] = useLocalStorage("tivikkir-user", {});
-
+	let history = useHistory();
+	const [tokenData, setTokenData] = useLocalStorage("tivikkir-user", {});
+	const [userInfo, setUserInfo] = useState({});
 	useEffect(() => {
-		if (userInfo.token) {
-			if (isPast(jwtDecode(userInfo.token).exp * 1000)) {
+		if (tokenData.token) {
+			const payload = jwtDecode(tokenData.token);
+			if (isPast(payload.exp * 1000)) {
+				setTokenData({});
 				setUserInfo({});
+				// token bayatlamış
+			} else {
+				// burada başarılı giriş var
+				setUserInfo(payload);
+				history.push("/");
 			}
 		}
-	}, [userInfo]);
+	}, [tokenData]);
 
-	// userInfo.token 
-	/* 
-	{
-  "id": 170,
-  "nickname": "t1",
-  "name": "t1",
-  "role": "USER",
-  "iat": 1733127420,
-  "exp": 1733149020
-}
-   */
 
 	return (
-		<UserContext.Provider value={{ userInfo, setUserInfo }}>
+		<UserContext.Provider value={{ userInfo, setTokenData, tokenData }}>
 			{children}
 		</UserContext.Provider>
 	)

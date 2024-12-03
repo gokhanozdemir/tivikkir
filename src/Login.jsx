@@ -10,7 +10,7 @@ export default function Login() {
   const values = queryString.parse(search);
   console.log(values.expiresIn, "***");
 
-  const { setUserInfo } = useUserContext();
+  const { setTokenData } = useUserContext();
 
 
   const {
@@ -26,7 +26,7 @@ export default function Login() {
     axios.post('https://kiwitter-node-77f5acb427c1.herokuapp.com/login', data)
       .then(function (response) {
         console.log(response);
-        setUserInfo(response.data);
+        setTokenData(response.data);
       })
       .catch(function (error) {
         console.log(error);
