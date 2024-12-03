@@ -10,12 +10,16 @@ export default function UserContextProvider({ children }) {
 	let history = useHistory();
 	const [tokenData, setTokenData] = useLocalStorage("tivikkir-user", {});
 	const [userInfo, setUserInfo] = useState({});
+
+	function logOut() {
+		setTokenData({});
+		setUserInfo({});
+	}
 	useEffect(() => {
 		if (tokenData.token) {
 			const payload = jwtDecode(tokenData.token);
 			if (isPast(payload.exp * 1000)) {
-				setTokenData({});
-				setUserInfo({});
+				logOut();
 				// token bayatlamış
 			} else {
 				// burada başarılı giriş var
@@ -27,7 +31,7 @@ export default function UserContextProvider({ children }) {
 
 
 	return (
-		<UserContext.Provider value={{ userInfo, setTokenData, tokenData }}>
+		<UserContext.Provider value={{ userInfo, setTokenData, tokenData, logOut }}>
 			{children}
 		</UserContext.Provider>
 	)
