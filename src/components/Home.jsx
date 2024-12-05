@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PageLayout from '../PageLayout'
 import Twit from './Twit'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 
 import { useForm } from 'react-hook-form';
@@ -10,8 +10,18 @@ import { useForm } from 'react-hook-form';
 
 // https://kiwitter-node-77f5acb427c1.herokuapp.com/twits
 function Home() {
-	const { register, handleSubmit, formState: { errors, isValid } } = useForm({ mode: "onChange" });
-	const onSubmit = data => console.log(data);
+	const { register, handleSubmit, formState: { errors, isValid }, reset } = useForm({ mode: "onChange" });
+	const onSubmit = data => {
+		console.log(data);
+
+		/* FIXME: author_id'yi context'dene oku */
+		const transformData = {
+			"author_id": 170,
+			"content": data.twitContent
+		}
+		console.log("transformed", transformData)
+		mutate(transformData)
+	};
 	console.log(errors);
 
 	// Queries
@@ -19,6 +29,25 @@ function Home() {
 		queryKey: ['mainPageTwits'], queryFn: () => {
 			return axios.get('https://kiwitter-node-77f5acb427c1.herokuapp.com/twits')
 		}
+	})
+
+	const queryClient = useQueryClient();
+
+	// Mutations
+	const { mutate } = useMutation({
+		mutationFn: (newTwit) => {
+			return axios.post('https://kiwitter-node-77f5acb427c1.herokuapp.com/twits', newTwit, {
+				headers: {
+					// FIXME token'ı context'ten çek
+					Authorization: `Bearer ${JSON.parse(localStorage.getItem("tivikkir-user")).token}`
+				}
+			})
+		},
+		onSuccess: () => {
+			reset(); // reset form
+			// Invalidate and refetch
+			queryClient.invalidateQueries({ queryKey: ['mainPageTwits'] })
+		},
 	})
 
 	return (
@@ -34,8 +63,8 @@ function Home() {
 
 					{errors.twitContent && <p className="text-red-600">{errors.twitContent.message}</p>}
 
-					<input type="submit" disabled={!isValid} className="h-10 px-5 rounded-lg bg-primary text-white disabled:opacity-70 disabled:cursor-not-allowed"
-					/>
+					<button type="submit" disabled={!isValid} className="h-10 px-5 rounded-lg bg-primary text-white disabled:opacity-70 disabled:cursor-not-allowed"
+					>Twit At</button>
 				</form>
 			</div>
 
