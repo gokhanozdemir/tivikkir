@@ -5,6 +5,7 @@ import Login from "./Login";
 import Signup from "./Signup";
 import PrivateRoute from "./components/PrivateRoute";
 import { useUserContext } from "./context/UserContext";
+import Home from "./components/Home";
 function App() {
 
   const { userInfo } = useUserContext();
@@ -22,8 +23,8 @@ function App() {
           Özel rota
         </PrivateRoute>
         <Route path="/" exact>
-          {/* /?variant=most_liked */}
-          <PageLayout>Home</PageLayout>
+          <Home />
+
         </Route>
         <Route path="/profile/:nick">
           <PageLayout>Profile page</PageLayout>

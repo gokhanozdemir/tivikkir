@@ -15,6 +15,7 @@ export default function UserContextProvider({ children }) {
 		setTokenData({});
 		setUserInfo({});
 	}
+
 	useEffect(() => {
 		if (tokenData.token) {
 			const payload = jwtDecode(tokenData.token);
