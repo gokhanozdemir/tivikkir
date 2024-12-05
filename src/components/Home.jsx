@@ -8,7 +8,7 @@ function Home() {
 	// Queries
 	const { data, isLoading, error } = useQuery({
 		queryKey: ['mainPageTwits'], queryFn: () => {
-			return axios.get('https://kiwitter-node-77f5acb427c1.herokuapp.com/twits')
+			return axios.get('https://kiwittesdfr-node-77f5acb427c1.herokuapp.com/twits')
 		}
 	})
 
@@ -20,7 +20,7 @@ function Home() {
 
 			{isLoading && <p>Loading...</p>}
 			{error && <p>{error.message}</p>}
-			{data.data && JSON.stringify(data.data)}
+			{data?.data && JSON.stringify(data.data)}
 			{/* twit listesi */}
 		</PageLayout>
 	)
